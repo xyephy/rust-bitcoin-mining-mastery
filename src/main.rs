@@ -1,8 +1,6 @@
-fn greet_miner(name: &str) {
-    println!("Hello, {}!", name);
+fn greet_miner(name: &str, hash_rate: i32) {
+    println!("Hello, {}! Hash rate: {} MH/s", name, hash_rate);
 }
-
 fn main() {
-    let miner = "Bitcoin Miner";
-    greet_miner(miner);
+    greet_miner("Bitcoin Miner", 42);
 }
