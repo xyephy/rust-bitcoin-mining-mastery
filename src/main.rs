@@ -1,12 +1,24 @@
+fn check_difficulty(hash: i32, difficulty: i32) -> bool {
+    hash < difficulty // Simulating "did we find a valid hash?"
+}
+
 fn main() {
-    let miner = "Satoshi"; // Immutable
-    println!("Miner: {}", miner);
+    let target_difficulty = 1000;
+    let mut nonce = 0;
 
-    let mut hash_rate = 50; // Mutable
-    println!("Hash rate: {} MH/s", hash_rate);
-    hash_rate = 75; // Reassign
-    println!("Updated hash rate: {} MH/s", hash_rate);
+    loop {
+        nonce += 1;
+        let hash = nonce * 42; // Fake hash calc
+        println!("Trying nonce: {}, hash: {}", nonce, hash);
 
-    let hash_rate = hash_rate + 25; // Shadowing
-    println!("Boosted hash rate: {} MH/s", hash_rate);
+        if check_difficulty(hash, target_difficulty) {
+            println!("Found valid hash {} with nonce {}!", hash, nonce);
+            break;
+        }
+
+        if nonce > 10 { // Cap for now 
+            println!("No luck yet...");
+            break;
+        }
+    }
 }
