@@ -1,6 +1,12 @@
-fn greet_miner(name: &str, hash_rate: i32) {
-    println!("Hello, {}! Hash rate: {} MH/s", name, hash_rate);
-}
 fn main() {
-    greet_miner("Bitcoin Miner", 42);
+    let miner = "Satoshi"; // Immutable
+    println!("Miner: {}", miner);
+
+    let mut hash_rate = 50; // Mutable
+    println!("Hash rate: {} MH/s", hash_rate);
+    hash_rate = 75; // Reassign
+    println!("Updated hash rate: {} MH/s", hash_rate);
+
+    let hash_rate = hash_rate + 25; // Shadowing
+    println!("Boosted hash rate: {} MH/s", hash_rate);
 }
