@@ -9,3 +9,8 @@
 - Code: Simulated a basic mining loop with nonce and fake hash ([src/main.rs](../src/main.rs)).
 - Notes: Rust’s strictness on mutability is wild but makes sense for safety.
 
+## March 3
+- Studied: Ownership (moves, borrowing) via [Rust by Example](https://doc.rust-lang.org/rust-by-example/).
+- Code: Built a Bitcoin block header struct ([src/main.rs](../src/main.rs)).
+- Notes: Ownership errors are brutal but make sense—& saved me!
+
