@@ -1,24 +1,12 @@
-fn check_difficulty(hash: i32, difficulty: i32) -> bool {
-    hash < difficulty // Simulating "did we find a valid hash?"
-}
-
 fn main() {
-    let target_difficulty = 1000;
-    let mut nonce = 0;
+    let miner = String::from("Satoshi"); // Owned string
+    println!("Miner: {}", miner);
 
-    loop {
-        nonce += 1;
-        let hash = nonce * 42; // Fake hash calc
-        println!("Trying nonce: {}, hash: {}", nonce, hash);
+   let miner2 = miner; // Move (not copy!)
+   // println!("Miner: {}", miner); // This errors—miner’s gone!
+    println!("Miner2: {}", miner2);
 
-        if check_difficulty(hash, target_difficulty) {
-            println!("Found valid hash {} with nonce {}!", hash, nonce);
-            break;
-        }
-
-        if nonce > 10 { // Cap for now 
-            println!("No luck yet...");
-            break;
-        }
-    }
+    let hash_rate = 42; // Primitive, copies fine
+    let hash_rate2 = hash_rate; // No move here
+    println!("Hash rates: {} and {}", hash_rate, hash_rate2);
 }
