@@ -12,6 +12,10 @@ fn update_nonce(header: &mut BlockHeader, new_nonce: u32) {
     header.nonce = new_nonce;
 }
 
+fn get_prev_hash<'a>(header: &'a BlockHeader) -> &'a str {
+    &header.prev_hash
+}
+
 fn main() {
     let mut block = BlockHeader {
         prev_hash: String::from("0000abc..."),
@@ -28,4 +32,7 @@ fn main() {
     let ref1 = &block;
     let ref2 = &block;
     println!("Double borrow: {} and {}", ref1.nonce, ref2.nonce);
+
+    let prev = get_prev_hash(&block);
+    println!("Prev hash: {}", prev);
 }
