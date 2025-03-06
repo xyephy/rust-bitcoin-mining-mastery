@@ -1,27 +1,31 @@
 struct BlockHeader {
-    prev_hash: String, // Simplified hash
-    nonce: u32,        // Mining variable
-    difficulty: u32,   // Target threshold
+    prev_hash: String,
+    nonce: u32,
+    difficulty: u32,
 }
 
-fn check_block(header: &BlockHeader) -> bool {
-    let fake_hash = header.nonce * 10; // Dummy calc
-    fake_hash < header.difficulty
+fn print_block(header: &BlockHeader) {
+    println!("Block nonce: {}", header.nonce);
+}
+
+fn update_nonce(header: &mut BlockHeader, new_nonce: u32) {
+    header.nonce = new_nonce;
 }
 
 fn main() {
-    let block = BlockHeader {
-        prev_hash: String::from("0000abc..."), // Fake hash
-        nonce: 42,
+    let mut block = BlockHeader {
+        prev_hash: String::from("0000abc..."),
+        nonce: 0,
         difficulty: 1000,
     };
 
-    if check_block(&block) {
-        println!("Block valid with nonce {}!", block.nonce);
-    } else {
-        println!("Nonce {} too weak.", block.nonce);
-    }
+    print_block(&block); // Immutable borrow
+    update_nonce(&mut block, 42); // Mutable borrow
+    print_block(&block); // Back to immutable
+    println!("Updated nonce: {}", block.nonce);
 
-    // Ownership still intact
-    println!("Prev hash: {}", block.prev_hash);
+    // Multiple immutable borrows
+    let ref1 = &block;
+    let ref2 = &block;
+    println!("Double borrow: {} and {}", ref1.nonce, ref2.nonce);
 }
