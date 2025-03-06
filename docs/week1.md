@@ -14,3 +14,7 @@
 - Code: Built a Bitcoin block header struct ([src/main.rs](../src/main.rs)).
 - Notes: Ownership errors are brutal but make sense—& saved me!
 
+## March 5 
+- Studied: Borrowing and lifetimes via [Rust by Example](https://doc.rust-lang.org/rust-by-example/).
+- Code: Mining sim with BlockHeader ([src/main.rs](../src/main.rs)).
+- Notes: Mining failed at first tweaked fake_hash, now it mines!
