@@ -20,14 +20,17 @@ fn hash_block(header: &BlockHeader) -> String {
 }
 
 fn mine_block(header: &mut BlockHeader) -> bool {
+    let mut attempts = 0;
     for n in 0..10000 {
         header.nonce = n;
+        attempts += 1;
         let hash = hash_block(header);
-        if hash.starts_with("00") { // Difficulty: 2 zeros
-            println!("Mined! Hash: {}, Nonce: {}", hash, n);
+        if hash.starts_with("00") {
+            println!("Mined! Hash: {}, Nonce: {}, Attempts: {}", hash, n, attempts);
             return true;
         }
     }
+    println!("Failed after {} attempts", attempts);
     false
 }
 
