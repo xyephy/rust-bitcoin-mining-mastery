@@ -5,7 +5,7 @@ struct BlockHeader {
     prev_hash: String,
     merkle_root: String,
     timestamp: u32,
-    bits: u32, // Difficulty in compact form
+    bits: u32,
     nonce: u32,
 }
 
@@ -21,33 +21,28 @@ fn double_sha256(header: &BlockHeader) -> Vec<u8> {
     Sha256::digest(&first_hash).to_vec()
 }
 
-// Simplified difficulty check (bits -> target)
 fn check_difficulty(hash: &[u8], bits: u32) -> bool {
-    // For bits 0x1d00ffff (easy), target is ~0x00000000FFFF0000...
-    let target = vec![0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00]; // 8 bytes for simplicity
+    let target = vec![0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00]; // Easy target
     for i in 0..8 {
-        if hash[i] > target[i] {
-            return false;
-        } else if hash[i] < target[i] {
-            return true;
-        }
+        if hash[i] > target[i] { return false; }
+        if hash[i] < target[i] { return true; }
     }
-    true // Equal is OK
+    true
 }
 
 fn mine(header: &mut BlockHeader) -> bool {
-    for n in 0..100000 {
+    let mut attempts = 0;
+    for n in 0..1000000 { // Up range—real mining’s grindy
         header.nonce = n;
+        attempts += 1;
         let hash = double_sha256(header);
         if check_difficulty(&hash, header.bits) {
-            let hash_hex = hash
-                .iter()
-                .map(|b| format!("{:02x}", b))
-                .collect::<String>();
-            println!("Mined! Nonce: {}, Hash: {}", n, hash_hex);
+            let hash_hex = hash.iter().map(|b| format!("{:02x}", b)).collect::<String>();
+            println!("Mined! Nonce: {}, Hash: {}, Attempts: {}", n, hash_hex, attempts);
             return true;
         }
     }
+    println!("Failed after {} attempts", attempts);
     false
 }
 
@@ -57,13 +52,13 @@ fn main() {
         prev_hash: String::from("0000abc..."),
         merkle_root: String::from("deadbeef..."),
         timestamp: 1677654321,
-        bits: 0x1d00ffff, // Easy Bitcoin difficulty
+        bits: 0x1d00ffff,
         nonce: 0,
     };
     println!("Mining block with bits: {:x}", block.bits);
     if mine(&mut block) {
-        println!("Success!");
+        println!("Success! Nonce: {}", block.nonce);
     } else {
-        println!("Failed after 100k attempts.");
+        println!("Failed!");
     }
 }
