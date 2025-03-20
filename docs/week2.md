@@ -5,3 +5,13 @@
 - Notes: Real hashing’s slow but cool—Bitcoin’s clicking!
 - Code: CPU miner with difficulty check ([projects/toy-miner/src/main.rs](../projects/toy-miner/src/main.rs)).
 - Notes: Fixed hex error, added real difficulty—feeling Bitcoin!
+
+## March 14 (Days 9-11)
+- Studied: 
+  - Day 9: Ch. 4—miner polish, attempts.
+  - Day 10: Ch. 5—node intro, TCP.
+  - Day 11: Ch. 5—node block request.
+- Code: 
+  - Miner with attempts ([projects/toy-miner/src/main.rs](../projects/toy-miner/src/main.rs)).
+  - Node with block req ([projects/simple-node/src/main.rs](../projects/simple-node/src/main.rs)).
+- Notes: Crushed 3 days—miner’s tight, Hit E0277 on node fixed ? operator, now it talks!
