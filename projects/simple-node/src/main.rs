@@ -1,5 +1,5 @@
-use std::net::{TcpListener, TcpStream};
 use std::io::{Read, Write};
+use std::net::{TcpListener, TcpStream};
 
 struct VersionMessage {
     version: i32,
@@ -17,17 +17,29 @@ fn send_version(stream: &mut TcpStream, msg: &VersionMessage) -> std::io::Result
     Ok(())
 }
 
+fn request_block(stream: &mut TcpStream, block_hash: &str) -> std::io::Result<()> {
+    let msg = format!("getblock: {}", block_hash);
+    stream.write_all(msg.as_bytes())?;
+    println!("Requested block: {}", block_hash);
+    Ok(())
+}
+
 fn handle_peer(mut stream: TcpStream) {
-    let msg = VersionMessage {
+    let version = VersionMessage {
         version: 70015,
         services: 0,
         timestamp: 1677654321,
     };
-    if let Ok(()) =send_version(&mut stream, &msg) {
+    if send_version(&mut stream, &version).is_ok() {
         let mut buffer = [0; 1024];
-        match stream.read(&mut buffer) {
-            Ok(n) if n > 0 => println!("Peer says: {}", String::from_utf8_lossy(&buffer[..n])),
-            _ => println!("No reply"),
+        if let Ok(n) = stream.read(&mut buffer) {
+            if n > 0 {
+                println!("Peer says: {}", String::from_utf8_lossy(&buffer[..n]));
+                request_block(&mut stream, "0000abc...").ok();
+                if let Ok(n) = stream.read(&mut buffer) {
+                    println!("Block data: {}", String::from_utf8_lossy(&buffer[..n]));
+                }
+            }
         }
     }
 }
